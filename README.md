@@ -30,7 +30,7 @@ Target utama berikutnya:
 
 ## 🛠️ Setup & Installation Guide
 
-Jika tim ingin mencoba menjalankan proyek ini di perangkat mereka, ikuti langkah-langkah berikut:
+Buat yang mau coba sendiri, bisa ikuti langkah-langkah berikut:
 
 ### 1️⃣ **Clone Repository**
 
