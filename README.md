@@ -1,8 +1,8 @@
-# Sentiment Analysis - Shopee COD Reviews
+# SensAShee - Sentiment Analysis - Shopee COD Reviews
 
 ## 📌 Project Overview
 
-Sentiment Analysis for Shopee COD Reviews adalah sebuah platform berbasis web yang memungkinkan pengguna untuk menganalisis sentimen dari ulasan pelanggan pada transaksi Cash on Delivery (COD) di Shopee. Dengan menggunakan teknologi **Natural Language Processing (NLP)** dan **Machine Learning**, website ini dapat mengklasifikasikan review sebagai **positif, netral, atau negatif**, serta memberikan insight mengenai pola ulasan pelanggan.
+SensAHee - Sentiment Analysis for Shopee COD Reviews adalah sebuah platform berbasis web yang memungkinkan pengguna untuk menganalisis sentimen dari ulasan pelanggan pada transaksi Cash on Delivery (COD) di Shopee. Dengan menggunakan teknologi **Natural Language Processing (NLP)** dan **Machine Learning**, website ini dapat mengklasifikasikan review sebagai **positif, netral, atau negatif**, serta memberikan insight mengenai pola ulasan pelanggan.
 
 ### 🎯 Fitur Utama
 
@@ -35,8 +35,8 @@ Jika tim ingin mencoba menjalankan proyek ini di perangkat mereka, ikuti langkah
 ### 1️⃣ **Clone Repository**
 
 ```bash
-git clone https://github.com/your-repo/sentiment-analysis-shopee.git
-cd sentiment-analysis-shopee
+git clone https://github.com/ucok-hub/web-sentiment-analysis.git
+cd web-sentiment-analysis
 ```
 
 ### 2️⃣ **Install Dependencies**
@@ -83,12 +83,4 @@ Untuk pertanyaan lebih lanjut, hubungi tim development melalui Slack atau GitHub
 
 ---
 
-## 📄 Lisensi
-
-Proyek ini berlisensi di bawah **MIT License**. Lihat [LICENSE](LICENSE) untuk informasi lebih lanjut.
-
----
-
 💡 **Catatan**: Pastikan membaca dokumentasi proyek ini sebelum melakukan perubahan besar!
-
-🚀 Selamat Coding! Semoga sukses! 🎉
