@@ -1,4 +1,7 @@
+'use client'
+
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import backgroundImage from '@/images/background-call-to-action.jpg'
@@ -27,9 +30,11 @@ export function CallToAction() {
               Unlock valuable insights from Shopee COD reviews with our
               AI-powered tool.
             </p>
-            <Button href="/register" color="white" className="mt-10">
-              Get Started
-            </Button>
+            <Link href="/file-upload">
+              <Button color="white" className="mt-10">
+                Get Started
+              </Button>
+            </Link>
           </div>
         </Container>
       </section>

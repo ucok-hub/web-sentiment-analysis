@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
+import Link from 'next/link'
 
 export function Hero() {
   return (
@@ -13,10 +14,9 @@ export function Hero() {
           improve your products.
         </p>
         <div className="mt-10 flex justify-center gap-x-6">
-          <Button href="/register">Get Started</Button>
-          <Button href="/login" variant="outline">
-            Sign In
-          </Button>
+          <Link href="/file-upload">
+            <Button>Get Started</Button>
+          </Link>
         </div>
       </Container>
     </section>

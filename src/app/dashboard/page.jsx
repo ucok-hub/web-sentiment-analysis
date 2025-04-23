@@ -5,18 +5,65 @@ import React from 'react'
 export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      {/* Header */}
-      <header className="mb-6 flex items-center space-x-4">
+      {/* Top Bar */}
+      <header className="mb-6 flex items-center justify-between">
         <div className="text-2xl font-bold text-orange-500">SensAShee</div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="font-serif text-3xl font-bold">Table Review</h1>
+        <button className="flex items-center rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100">
+          Filter <span className="ml-2">▼</span>
+        </button>
       </header>
 
-      {/* Top Section */}
+      {/* Sentiment Analysis Table Card */}
+      <div className="mb-6 rounded-lg border border-gray-300 bg-white p-4 shadow">
+        <table className="w-full table-auto border-collapse">
+          <thead>
+            <tr className="bg-orange-500 text-white">
+              <th className="rounded-tl-lg border border-black px-4 py-2">
+                No
+              </th>
+              <th className="border border-black px-4 py-2">Review</th>
+              <th className="rounded-tr-lg border border-black px-4 py-2">
+                Sentiment Analysis
+              </th>
+              <th className="border border-black px-4 py-2">Issue Label</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-gray-100">
+              <td className="border border-black px-4 py-2">1</td>
+              <td className="border border-black px-4 py-2">
+                Sample review text
+              </td>
+              <td className="border border-black px-4 py-2">
+                <span className="rounded-full bg-green-500 px-3 py-1 text-black">
+                  Positif
+                </span>
+              </td>
+              <td className="border border-black px-4 py-2"></td>
+            </tr>
+            <tr className="bg-gray-100">
+              <td className="border border-black px-4 py-2">2</td>
+              <td className="border border-black px-4 py-2">
+                Sample review text
+              </td>
+              <td className="border border-black px-4 py-2">
+                <span className="rounded-full bg-red-500 px-3 py-1 text-black">
+                  Negatif
+                </span>
+              </td>
+              <td className="border border-black px-4 py-2"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* Bottom Section */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Left Panel */}
+        {/* Left Card */}
         <div className="rounded-lg border bg-white shadow">
           <div className="rounded-t-lg bg-orange-500 p-4 font-semibold text-white">
-            Clustered Negative Data
+            Sentiment Analysis Chart
           </div>
           <div className="p-6">
             {/* Bar Chart */}
@@ -36,9 +83,11 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Right Panel */}
+        {/* Right Card */}
         <div className="rounded-lg border bg-white shadow">
-          <div className="p-4 text-lg font-semibold underline">Summarize</div>
+          <div className="p-4 text-lg font-semibold underline">
+            Summarized Negative Review
+          </div>
           <div className="p-6">
             <textarea
               className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-orange-500"
@@ -47,52 +96,6 @@ export default function Dashboard() {
             ></textarea>
           </div>
         </div>
-      </div>
-
-      {/* Bottom Section */}
-      <div className="mt-8">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold">Review</h2>
-          <button className="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
-            Filter
-          </button>
-        </div>
-        <table className="w-full table-auto border-collapse border border-black">
-          <thead>
-            <tr className="bg-orange-500 text-white">
-              <th className="border border-black px-4 py-2">No</th>
-              <th className="border border-black px-4 py-2">Review</th>
-              <th className="border border-black px-4 py-2">
-                Sentiment Analysis
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Placeholder rows */}
-            <tr className="bg-gray-100">
-              <td className="border border-black px-4 py-2">1</td>
-              <td className="border border-black px-4 py-2">
-                Sample review text
-              </td>
-              <td className="border border-black px-4 py-2">
-                <span className="rounded-full bg-green-500 px-3 py-1 text-white">
-                  Positif
-                </span>
-              </td>
-            </tr>
-            <tr className="bg-gray-100">
-              <td className="border border-black px-4 py-2">2</td>
-              <td className="border border-black px-4 py-2">
-                Sample review text
-              </td>
-              <td className="border border-black px-4 py-2">
-                <span className="rounded-full bg-red-500 px-3 py-1 text-white">
-                  Negatif
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   )

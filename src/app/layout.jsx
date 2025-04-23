@@ -34,7 +34,10 @@ export default function RootLayout({ children }) {
         lexend.variable,
       )}
     >
-      <body className="flex h-full flex-col">{children}</body>
+      <body className="flex h-full flex-col">
+        {/* Removed login and register-related components */}
+        {children}
+      </body>
     </html>
   )
 }
