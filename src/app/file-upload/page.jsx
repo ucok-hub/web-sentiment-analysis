@@ -5,19 +5,44 @@ import { useRouter } from 'next/navigation'
 
 export default function FileUpload() {
   const [file, setFile] = useState(null)
+  const [error, setError] = useState('')
   const router = useRouter()
 
+  const validFormats = ['csv', 'xls', 'xlsx']
+
   const handleFileSelect = (event) => {
-    setFile(event.target.files[0])
+    const selectedFile = event.target.files[0]
+    validateFile(selectedFile)
   }
 
   const handleDrop = (event) => {
     event.preventDefault()
-    setFile(event.dataTransfer.files[0])
+    const droppedFile = event.dataTransfer.files[0]
+    validateFile(droppedFile)
   }
 
   const handleDragOver = (event) => {
     event.preventDefault()
+  }
+
+  const validateFile = (file) => {
+    if (file) {
+      const fileExtension = file.name.split('.').pop().toLowerCase()
+      if (validFormats.includes(fileExtension)) {
+        setFile(file)
+        setError('')
+      } else {
+        setFile(null)
+        setError(
+          'The file type you uploaded is wrong, please adjust the file type!',
+        )
+      }
+    }
+  }
+
+  const handleDeleteFile = () => {
+    setFile(null)
+    setError('')
   }
 
   const handleAnalyze = () => {
@@ -73,6 +98,22 @@ export default function FileUpload() {
               onChange={handleFileSelect}
             />
           </div>
+
+          {/* Error Message */}
+          {error && <p className="text-center text-sm text-red-500">{error}</p>}
+
+          {/* Uploaded File Display */}
+          {file && (
+            <div className="flex items-center justify-between rounded bg-gray-100 p-3">
+              <span className="text-sm text-gray-700">{file.name}</span>
+              <button
+                onClick={handleDeleteFile}
+                className="text-red-500 hover:text-red-700"
+              >
+                ✕
+              </button>
+            </div>
+          )}
 
           {/* Supported Formats */}
           <p className="text-center text-sm text-gray-500">
