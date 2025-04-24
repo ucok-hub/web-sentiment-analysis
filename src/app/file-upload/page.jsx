@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
 
 export default function FileUpload() {
   const [file, setFile] = useState(null)
@@ -51,24 +53,47 @@ export default function FileUpload() {
     }
   }
 
+  const handleLogoClick = () => {
+    const confirmed = window.confirm(
+      'This action will take you to the main page, continue?',
+    )
+    if (confirmed) {
+      router.push('/')
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       {/* Header */}
       <header className="fixed top-0 left-0 w-full bg-white p-4 shadow">
-        <div className="flex items-center text-2xl font-bold text-black">
-          <img
-            src="/icons/chat-bubble-sa.svg"
+        <div
+          className="flex cursor-pointer items-center text-2xl font-bold text-black"
+          onClick={handleLogoClick}
+        >
+          <Image
+            src="/logo.svg"
             alt="SensAShee Logo"
-            className="mr-2 h-6 w-6 text-orange-500"
+            width={40}
+            height={40}
+            className="mr-3 h-10 w-10"
           />
-          SensAShee
+          <span className="text-orange-500">SensAShee</span>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex flex-grow items-center justify-center p-6">
+      <main className="mt-16 flex flex-grow items-center justify-center p-6">
         <div className="w-full max-w-lg space-y-4 rounded-lg bg-white p-6 shadow">
           {/* Title */}
+          <div className="flex justify-center">
+            <Image
+              src="/logo.svg"
+              alt="SensAShee Logo"
+              width={90}
+              height={90}
+              className="mb-4"
+            />
+          </div>
           <h1 className="text-center text-2xl font-bold">Upload Your Data</h1>
           <p className="text-center text-gray-600">
             Select or drag & drop your CSV, XLS, or XLSX file to begin sentiment
@@ -137,6 +162,16 @@ export default function FileUpload() {
 
       {/* Footer */}
       <footer className="py-4 text-center text-sm text-gray-500">
+        <div className="mb-2 flex items-center justify-center">
+          <Image
+            src="/logo.svg"
+            alt="SensAShee Logo"
+            width={32}
+            height={32}
+            className="mr-2"
+          />
+          <span>SensAShee</span>
+        </div>
         © SensAShee 2025 – Sentiment Analysis Dashboard
       </footer>
     </div>

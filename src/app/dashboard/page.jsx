@@ -1,13 +1,38 @@
 'use client'
 
 import React from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function Dashboard() {
+  const router = useRouter()
+
+  const handleLogoClick = () => {
+    const confirmed = window.confirm(
+      'This action will take you to the main page, continue?',
+    )
+    if (confirmed) {
+      router.push('/')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Top Bar */}
       <header className="mb-6 flex items-center justify-between">
-        <div className="text-2xl font-bold text-orange-500">SensAShee</div>
+        <div
+          onClick={handleLogoClick}
+          className="flex cursor-pointer items-center transition-opacity hover:opacity-80"
+        >
+          <Image
+            src="/logo.svg"
+            alt="SensAShee Logo"
+            width={52}
+            height={52}
+            className="mr-3"
+          />
+          <span className="text-2xl font-bold text-orange-500">SensAShee</span>
+        </div>
         <h1 className="font-serif text-3xl font-bold">Table Review</h1>
         <button className="flex items-center rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100">
           Filter <span className="ml-2">▼</span>
@@ -97,6 +122,21 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="mt-8 py-4 text-center text-sm text-gray-500">
+        <div className="mb-2 flex items-center justify-center">
+          <Image
+            src="/logo.svg"
+            alt="SensAShee Logo"
+            width={32}
+            height={32}
+            className="mr-2"
+          />
+          <span>SensAShee</span>
+        </div>
+        <div>© 2025 SensAShee – Sentiment Analysis Dashboard</div>
+      </footer>
     </div>
   )
 }

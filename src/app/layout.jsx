@@ -6,10 +6,13 @@ import '@/styles/tailwind.css'
 export const metadata = {
   title: {
     template: '%s - SensAShee',
-    default: 'SensAShee - Accounting made simple for small businesses',
+    default: 'SensAShee - Sentiment Analysis for Shopee Reviews',
   },
   description:
-    'Most bookkeeping software is accurate, but hard to use. We make the opposite trade-off, and hope you don’t get audited.',
+    'SensAShee is a sentiment analysis tool for Shopee product reviews, providing valuable insights for businesses.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 const inter = Inter({
@@ -34,10 +37,7 @@ export default function RootLayout({ children }) {
         lexend.variable,
       )}
     >
-      <body className="flex h-full flex-col">
-        {/* Removed login and register-related components */}
-        {children}
-      </body>
+      <body className="flex h-full flex-col">{children}</body>
     </html>
   )
 }

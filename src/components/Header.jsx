@@ -75,13 +75,13 @@ function MobileNavigation() {
 
 export function Header() {
   return (
-    <header className="bg-gradient-to-r from-red-500 to-orange-500 p-4 text-white">
+    <header className="py-10">
       <Container>
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center md:gap-x-12">
-            <Link href="/" aria-label="Home">
-              <Logo className="h-10 w-auto" />
-            </Link>
+            <div className="rounded-lg bg-black px-4 py-2">
+              <Logo className="text-white" />
+            </div>
             <div className="hidden md:flex md:gap-x-6">
               <NavLink href="/dashboard">Dashboard</NavLink>
             </div>

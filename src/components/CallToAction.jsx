@@ -1,43 +1,26 @@
 'use client'
 
-import Image from 'next/image'
-import Link from 'next/link'
 import { Button } from '@/components/Button'
-import { Container } from '@/components/Container'
-import backgroundImage from '@/images/background-call-to-action.jpg'
 
 export function CallToAction() {
   return (
-    <div className="bg-gradient-to-r from-red-500 to-orange-500 p-8 text-white">
-      <section
-        id="get-started-today"
-        className="relative overflow-hidden bg-blue-600 py-32"
-      >
-        <Image
-          className="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
-          src={backgroundImage}
-          alt=""
-          width={2347}
-          height={1244}
-          unoptimized
-        />
-        <Container className="relative">
-          <div className="mx-auto max-w-lg text-center">
-            <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
-              Analyze Your Reviews Now
-            </h2>
-            <p className="mt-4 text-lg tracking-tight text-white">
-              Unlock valuable insights from Shopee COD reviews with our
-              AI-powered tool.
-            </p>
-            <Link href="/file-upload">
-              <Button color="white" className="mt-10">
-                Get Started
-              </Button>
-            </Link>
+    <section className="py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 px-6 py-16 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-white">
+            Analyze Your Reviews Now
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-lg text-white/80">
+            Unlock valuable insights from Shopee COD reviews with our AI-powered
+            tool.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <Button variant="white" href="#">
+              Get Started
+            </Button>
           </div>
-        </Container>
-      </section>
-    </div>
+        </div>
+      </div>
+    </section>
   )
 }
