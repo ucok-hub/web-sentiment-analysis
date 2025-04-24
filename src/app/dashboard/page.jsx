@@ -1,11 +1,65 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
+import { Logo } from '@/components/Logo'
+
+// Generate 50 dummy reviews with random sentiment and issue labels
+const issueTypes = [
+  'Production Defect',
+  'Shipping Delay',
+  'Seller Error',
+  'Wrong Item',
+  'Damaged Packaging',
+  'Late Response',
+  'Payment Issue',
+]
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max)
+}
+
+const tableData = Array.from({ length: 50 }, (_, i) => {
+  const isNegative = Math.random() < 0.4 // 40% negative
+  const sentiment = isNegative ? 'Negatif' : 'Positif'
+  const issue = isNegative ? issueTypes[getRandomInt(issueTypes.length)] : null
+  return {
+    no: i + 1,
+    review: isNegative
+      ? `Negative review about ${issue.toLowerCase()}`
+      : 'Positive review about product/service',
+    sentiment,
+    issue,
+  }
+})
+
+// Count negative issues for clustering
+const issueClusters = issueTypes
+  .map((type) => ({
+    label: type,
+    count: tableData.filter(
+      (d) => d.sentiment === 'Negatif' && d.issue === type,
+    ).length,
+  }))
+  .filter((c) => c.count > 0)
+  .sort((a, b) => b.count - a.count) // Sort descending by count
+
+// Find the most frequent issue label and count
+const mostFrequentIssue = issueClusters.length > 0 ? issueClusters[0].label : ''
+const mostFrequentCount = issueClusters.length > 0 ? issueClusters[0].count : 0
+
+// Adjusted summary for Seller Error
+const summary =
+  mostFrequentIssue === 'Seller Error'
+    ? `Most frequent issue: Seller Error (${mostFrequentCount} cases). Customers mostly complain about mistakes made by the seller, such as sending the wrong item, incomplete orders, or not following special instructions. It is recommended to improve order accuracy, double-check items before shipping, and enhance communication with buyers to reduce these errors.`
+    : mostFrequentIssue
+      ? `Most frequent issue: ${mostFrequentIssue} (${mostFrequentCount} cases). Customers mostly complain about ${mostFrequentIssue.toLowerCase()}. Please review the related process to reduce this issue.`
+      : 'No significant negative issues detected.'
 
 export default function Dashboard() {
   const router = useRouter()
+  const [filter, setFilter] = useState('all')
+  const [showFilter, setShowFilter] = useState(false)
 
   const handleLogoClick = () => {
     const confirmed = window.confirm(
@@ -16,6 +70,12 @@ export default function Dashboard() {
     }
   }
 
+  // Filtering logic
+  const filteredTableData =
+    filter === 'all'
+      ? tableData
+      : tableData.filter((row) => row.sentiment === filter)
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Top Bar */}
@@ -24,23 +84,54 @@ export default function Dashboard() {
           onClick={handleLogoClick}
           className="flex cursor-pointer items-center transition-opacity hover:opacity-80"
         >
-          <Image
-            src="/logo.svg"
-            alt="SensAShee Logo"
-            width={52}
-            height={52}
-            className="mr-3"
-          />
-          <span className="text-2xl font-bold text-orange-500">SensAShee</span>
+          <Logo className="h-10" />
         </div>
         <h1 className="font-serif text-3xl font-bold">Table Review</h1>
-        <button className="flex items-center rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100">
-          Filter <span className="ml-2">▼</span>
-        </button>
+        <div className="relative">
+          <button
+            className="flex items-center rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100"
+            onClick={() => setShowFilter((v) => !v)}
+          >
+            Filter <span className="ml-2">▼</span>
+          </button>
+          {/* Filter Dropdown */}
+          <div
+            className="absolute right-0 z-10 mt-2 w-40 rounded-md bg-white shadow-lg"
+            style={{ display: showFilter ? 'block' : 'none' }}
+          >
+            <button
+              className={`block w-full px-4 py-2 text-left hover:bg-gray-100 ${filter === 'all' ? 'font-bold' : ''}`}
+              onClick={() => {
+                setFilter('all')
+                setShowFilter(false)
+              }}
+            >
+              All
+            </button>
+            <button
+              className={`block w-full px-4 py-2 text-left hover:bg-gray-100 ${filter === 'Positif' ? 'font-bold' : ''}`}
+              onClick={() => {
+                setFilter('Positif')
+                setShowFilter(false)
+              }}
+            >
+              Positive
+            </button>
+            <button
+              className={`block w-full px-4 py-2 text-left hover:bg-gray-100 ${filter === 'Negatif' ? 'font-bold' : ''}`}
+              onClick={() => {
+                setFilter('Negatif')
+                setShowFilter(false)
+              }}
+            >
+              Negative
+            </button>
+          </div>
+        </div>
       </header>
 
       {/* Sentiment Analysis Table Card */}
-      <div className="mb-6 rounded-lg border border-gray-300 bg-white p-4 shadow">
+      <div className="mb-6 max-h-96 overflow-x-auto overflow-y-auto rounded-lg border border-gray-300 bg-white p-4 shadow">
         <table className="w-full table-auto border-collapse">
           <thead>
             <tr className="bg-orange-500 text-white">
@@ -51,74 +142,70 @@ export default function Dashboard() {
               <th className="rounded-tr-lg border border-black px-4 py-2">
                 Sentiment Analysis
               </th>
-              <th className="border border-black px-4 py-2">Issue Label</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-gray-100">
-              <td className="border border-black px-4 py-2">1</td>
-              <td className="border border-black px-4 py-2">
-                Sample review text
-              </td>
-              <td className="border border-black px-4 py-2">
-                <span className="rounded-full bg-green-500 px-3 py-1 text-black">
-                  Positif
-                </span>
-              </td>
-              <td className="border border-black px-4 py-2"></td>
-            </tr>
-            <tr className="bg-gray-100">
-              <td className="border border-black px-4 py-2">2</td>
-              <td className="border border-black px-4 py-2">
-                Sample review text
-              </td>
-              <td className="border border-black px-4 py-2">
-                <span className="rounded-full bg-red-500 px-3 py-1 text-black">
-                  Negatif
-                </span>
-              </td>
-              <td className="border border-black px-4 py-2"></td>
-            </tr>
+            {filteredTableData.map((row) => (
+              <tr className="bg-gray-100" key={row.no}>
+                <td className="border border-black px-4 py-2">{row.no}</td>
+                <td className="border border-black px-4 py-2">{row.review}</td>
+                <td className="border border-black px-4 py-2">
+                  <span
+                    className={`rounded-full px-3 py-1 text-black ${
+                      row.sentiment === 'Positif'
+                        ? 'bg-green-500'
+                        : 'bg-red-500'
+                    }`}
+                  >
+                    {row.sentiment}
+                  </span>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
       {/* Bottom Section */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Left Card */}
-        <div className="rounded-lg border bg-white shadow">
+        {/* Left Card: Issue Clustering Bar Chart */}
+        <div className="flex flex-col rounded-lg border bg-white shadow">
           <div className="rounded-t-lg bg-orange-500 p-4 font-semibold text-white">
-            Sentiment Analysis Chart
+            Issue Clustering (Negative Reviews)
           </div>
-          <div className="p-6">
-            {/* Bar Chart */}
-            <div className="relative h-40">
-              <div className="absolute top-4 left-0 h-6 w-[110px] bg-gradient-to-r from-yellow-400 to-pink-500"></div>
-              <div className="absolute top-16 left-0 h-6 w-[80px] bg-gradient-to-r from-blue-400 to-purple-500"></div>
-              <div className="absolute top-28 left-0 h-6 w-[20px] bg-red-500"></div>
-              {/* Grid lines */}
-              <div className="absolute inset-0 border-t border-gray-300"></div>
-            </div>
-            {/* Legend */}
-            <div className="mt-4 flex justify-around text-sm">
-              <span className="text-blue-500">Positif</span>
-              <span className="text-red-500">Negatif</span>
-              <span className="text-yellow-500">Netral</span>
+          <div className="flex flex-1 flex-col justify-center p-6">
+            {/* Vertical Bar Chart */}
+            <div className="flex flex-col items-start gap-4">
+              {issueClusters.length === 0 && (
+                <span className="text-gray-500">No negative issues found.</span>
+              )}
+              {issueClusters.map((issue, idx) => (
+                <div key={issue.label} className="flex w-full items-center">
+                  <div
+                    className="h-6 rounded bg-gradient-to-r from-orange-400 to-pink-500"
+                    style={{ width: `${issue.count * 24}px`, minWidth: '2rem' }}
+                  ></div>
+                  <span className="ml-3 text-base font-medium text-gray-700">
+                    {issue.label}{' '}
+                    <span className="ml-1 text-xs text-gray-500">
+                      ({issue.count})
+                    </span>
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Right Card */}
-        <div className="rounded-lg border bg-white shadow">
-          <div className="p-4 text-lg font-semibold underline">
-            Summarized Negative Review
+        {/* Right Card: Summarized Negative Review */}
+        <div className="flex flex-col rounded-lg border bg-white shadow">
+          <div className="rounded-t-lg bg-orange-500 p-4 font-semibold text-white">
+            Ringkasan Masalah Utama dari Review Negatif
           </div>
-          <div className="p-6">
-            <textarea
-              className="w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-orange-500"
-              rows="6"
-              placeholder="Write your summary here..."
-            ></textarea>
+          <div className="flex flex-1 flex-col justify-center p-6">
+            <div className="min-h-[120px] rounded-md border border-gray-300 bg-gray-50 p-4 text-gray-700">
+              {summary}
+            </div>
           </div>
         </div>
       </div>
@@ -126,14 +213,7 @@ export default function Dashboard() {
       {/* Footer */}
       <footer className="mt-8 py-4 text-center text-sm text-gray-500">
         <div className="mb-2 flex items-center justify-center">
-          <Image
-            src="/logo.svg"
-            alt="SensAShee Logo"
-            width={32}
-            height={32}
-            className="mr-2"
-          />
-          <span>SensAShee</span>
+          <Logo className="h-8" />
         </div>
         <div>© 2025 SensAShee – Sentiment Analysis Dashboard</div>
       </footer>

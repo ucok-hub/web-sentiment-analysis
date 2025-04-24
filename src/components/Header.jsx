@@ -79,9 +79,9 @@ export function Header() {
       <Container>
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center md:gap-x-12">
-            <div className="rounded-lg bg-black px-4 py-2">
-              <Logo className="text-white" />
-            </div>
+            <Link href="/" aria-label="Home">
+              <Logo className="h-10" />
+            </Link>
             <div className="hidden md:flex md:gap-x-6">
               <NavLink href="/dashboard">Dashboard</NavLink>
             </div>
