@@ -6,10 +6,10 @@ import '@/styles/tailwind.css'
 export const metadata = {
   title: {
     template: '%s - SensAShee',
-    default: 'SensAShee - Accounting made simple for small businesses',
+    default: 'SensAShee -  Sentiment Analysis for Shopee Reviews',
   },
   description:
-    'Most bookkeeping software is accurate, but hard to use. We make the opposite trade-off, and hope you don’t get audited.',
+    'Analyze customer reviews effortlessly and gain valuable insights to improve your products.',
   icons: {
     icon: '/favicon.ico',
   },
