@@ -86,7 +86,7 @@ export default function Dashboard() {
         >
           <Logo className="h-10" />
         </div>
-        <h1 className="font-serif text-3xl font-bold">Table Review</h1>
+        <h1 className="font-display text-3xl font-bold">Table Review</h1>
         <div className="relative">
           <button
             className="flex items-center rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100"
