@@ -3,7 +3,7 @@ import Image from 'next/image'
 export function Logo(props) {
   return (
     <span
-      className={`flex items-center gap-1 ${props.className || ''}`}
+      className={`flex items-center ${props.className || ''}`}
       style={props.style}
     >
       <Image
@@ -13,7 +13,7 @@ export function Logo(props) {
         height={128}
         priority={props.priority}
       />
-      <span className="text-xl font-bold text-orange-500 select-none">
+      <span className="ml-[-25px] text-xl font-bold text-orange-500 select-none">
         SensAShee
       </span>
     </span>

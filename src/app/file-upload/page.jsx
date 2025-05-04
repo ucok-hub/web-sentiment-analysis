@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Logo } from '@/components/Logo'
 
 export default function FileUpload() {
   const [file, setFile] = useState(null)
@@ -70,14 +71,7 @@ export default function FileUpload() {
           className="flex cursor-pointer items-center text-2xl font-bold text-black"
           onClick={handleLogoClick}
         >
-          <Image
-            src="/logo.svg"
-            alt="SensAShee Logo"
-            width={40}
-            height={40}
-            className="mr-3 h-10 w-10"
-          />
-          <span className="text-orange-500">SensAShee</span>
+          <Logo className="h-10" />
         </div>
       </header>
 
@@ -162,16 +156,6 @@ export default function FileUpload() {
 
       {/* Footer */}
       <footer className="py-4 text-center text-sm text-gray-500">
-        <div className="mb-2 flex items-center justify-center">
-          <Image
-            src="/logo.svg"
-            alt="SensAShee Logo"
-            width={32}
-            height={32}
-            className="mr-2"
-          />
-          <span>SensAShee</span>
-        </div>
         © SensAShee 2025 – Sentiment Analysis Dashboard
       </footer>
     </div>
