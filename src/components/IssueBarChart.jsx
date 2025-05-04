@@ -19,7 +19,7 @@ export default function IssueBarChart({ data }) {
         layout: root.verticalLayout,
         width: am5.percent(100),
         height: am5.percent(100),
-      })
+      }),
     )
 
     // Y Axis (Value) - integers only
@@ -34,7 +34,7 @@ export default function IssueBarChart({ data }) {
         maxPrecision: 0,
         calculateTotals: true,
         extraMax: 0.1,
-      })
+      }),
     )
     yAxis.getNumberFormatter().set('numberFormat', '#')
     yAxis.set('maxPrecision', 0)
@@ -43,7 +43,7 @@ export default function IssueBarChart({ data }) {
     yAxis.set('step', 1)
     yAxis.set('interval', 1)
     // Force grid intervals to 1 after axis is ready
-    yAxis.events.on('boundschanged', function() {
+    yAxis.events.on('boundschanged', function () {
       yAxis.set('interval', 1)
     })
 
@@ -54,7 +54,7 @@ export default function IssueBarChart({ data }) {
           minGridDistance: 60, // more space between bars
         }),
         categoryField: 'label',
-      })
+      }),
     )
     xAxis.data.setAll(data)
     // Wrap or rotate labels to prevent overlap
@@ -75,7 +75,7 @@ export default function IssueBarChart({ data }) {
         categoryXField: 'label',
         fill: am5.color(0x14b8a6),
         stroke: am5.color(0x14b8a6),
-      })
+      }),
     )
     series.data.setAll(data)
 
@@ -90,10 +90,20 @@ export default function IssueBarChart({ data }) {
 
   // Make chart fill parent and allow horizontal scroll if needed
   return (
-    <div style={{ overflowX: 'auto', width: '100%', height: '320px', minHeight: 240 }}>
+    <div
+      style={{
+        overflowX: 'auto',
+        width: '100%',
+        height: '320px',
+        minHeight: 240,
+      }}
+    >
       <div
         ref={chartRef}
-        style={{ width: data.length > 6 ? data.length * 100 : '100%', height: '100%' }}
+        style={{
+          width: data.length > 6 ? data.length * 100 : '100%',
+          height: '100%',
+        }}
         id="issue-barchart-am5"
       />
     </div>
