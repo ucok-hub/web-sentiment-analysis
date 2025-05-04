@@ -174,26 +174,86 @@ export default function Dashboard() {
             Issue Clustering (Negative Reviews)
           </div>
           <div className="flex flex-1 flex-col justify-center p-6">
-            {/* Vertical Bar Chart */}
-            <div className="flex flex-col items-start gap-4">
-              {issueClusters.length === 0 && (
-                <span className="text-gray-500">No negative issues found.</span>
-              )}
-              {issueClusters.map((issue, idx) => (
-                <div key={issue.label} className="flex w-full items-center">
+            {/* Responsive Vertical Bar Chart */}
+            {(() => {
+              const maxBars = 15 // max bars before scroll
+              const barCount = issueClusters.length
+              const chartWidth = 480 // px, adjust as needed
+              const minBarWidth = 40 // increased for better text display
+              const maxBarWidth = 80 // increased for better text display
+              const gap = 12
+              let barWidth = Math.floor(
+                (chartWidth - gap * (barCount - 1)) / barCount,
+              )
+              if (barWidth > maxBarWidth) barWidth = maxBarWidth
+              if (barWidth < minBarWidth) barWidth = minBarWidth
+              const isScrollable =
+                barCount > maxBars || barWidth * barCount > chartWidth
+
+              return (
+                <div className="relative">
+                  {/* Scroll indicator for mobile */}
+                  {isScrollable && (
+                    <div className="mb-2 text-center text-xs text-gray-500 md:hidden">
+                      ← Swipe to see more →
+                    </div>
+                  )}
+
                   <div
-                    className="h-6 rounded bg-gradient-to-r from-orange-400 to-pink-500"
-                    style={{ width: `${issue.count * 24}px`, minWidth: '2rem' }}
-                  ></div>
-                  <span className="ml-3 text-base font-medium text-gray-700">
-                    {issue.label}{' '}
-                    <span className="ml-1 text-xs text-gray-500">
-                      ({issue.count})
-                    </span>
-                  </span>
+                    className="relative overflow-x-auto"
+                    style={{
+                      WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+                      paddingBottom: '40px', // Increased space for labels
+                    }}
+                  >
+                    <div
+                      className="flex h-60 items-end gap-3"
+                      style={{
+                        width: 'fit-content',
+                        minWidth: '100%',
+                      }}
+                    >
+                      {issueClusters.length === 0 && (
+                        <span className="text-gray-500">
+                          No negative issues found.
+                        </span>
+                      )}
+                      {issueClusters.map((issue, idx) => (
+                        <div
+                          key={issue.label}
+                          className="flex flex-col items-center"
+                          style={{
+                            width: barWidth,
+                            marginRight: idx === barCount - 1 ? 0 : gap,
+                          }}
+                        >
+                          <div
+                            className="relative w-full rounded-t bg-teal-400"
+                            style={{
+                              height: `${issue.count * 3}px`,
+                              minHeight: '12px',
+                            }}
+                          >
+                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-bold text-gray-700">
+                              {issue.count}
+                            </span>
+                          </div>
+                          {/* Regular label below bar */}
+                          <div className="mt-2 h-20 w-full">
+                            <div
+                              className="text-center text-xs text-gray-700"
+                              title={issue.label}
+                            >
+                              {issue.label}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
+              )
+            })()}
           </div>
         </div>
 
