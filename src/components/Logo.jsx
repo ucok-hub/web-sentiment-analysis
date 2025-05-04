@@ -13,7 +13,7 @@ export function Logo(props) {
         height={128}
         priority={props.priority}
       />
-      <span className="ml-[-25px] text-xl font-bold text-orange-500 select-none">
+      <span className="ml-[-6px] hidden text-xl font-bold text-orange-500 select-none sm:inline">
         SensAShee
       </span>
     </span>

@@ -15,7 +15,11 @@ export function CallToAction() {
             tool.
           </p>
           <div className="mt-8 flex justify-center">
-            <Button variant="white" href="#">
+            <Button
+              variant="white"
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
               Get Started
             </Button>
           </div>
