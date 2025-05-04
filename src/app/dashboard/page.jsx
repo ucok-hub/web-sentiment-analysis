@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Logo } from '@/components/Logo'
 import IssueBarChart from '@/components/IssueBarChart'
@@ -9,9 +9,11 @@ export default function Dashboard() {
   const router = useRouter()
   const [filter, setFilter] = useState('all')
   const [showFilter, setShowFilter] = useState(false)
+  const [tableData, setTableData] = useState(null)
+  const [issueClusters, setIssueClusters] = useState(null)
+  const [summary, setSummary] = useState('')
 
-  // Generate dummy data only on client
-  const { tableData, issueClusters, summary } = useMemo(() => {
+  useEffect(() => {
     const issueTypes = [
       'Production Defect',
       'Shipping Delay',
@@ -24,7 +26,7 @@ export default function Dashboard() {
     function getRandomInt(max) {
       return Math.floor(Math.random() * max)
     }
-    const tableData = Array.from({ length: 50 }, (_, i) => {
+    const generatedTableData = Array.from({ length: 50 }, (_, i) => {
       const isNegative = Math.random() < 0.4 // 40% negative
       const sentiment = isNegative ? 'Negatif' : 'Positif'
       const issue = isNegative
@@ -39,26 +41,28 @@ export default function Dashboard() {
         issue,
       }
     })
-    const issueClusters = issueTypes
+    const generatedIssueClusters = issueTypes
       .map((type) => ({
         label: type,
-        count: tableData.filter(
+        count: generatedTableData.filter(
           (d) => d.sentiment === 'Negatif' && d.issue === type,
         ).length,
       }))
       .filter((c) => c.count > 0)
       .sort((a, b) => b.count - a.count)
     const mostFrequentIssue =
-      issueClusters.length > 0 ? issueClusters[0].label : ''
+      generatedIssueClusters.length > 0 ? generatedIssueClusters[0].label : ''
     const mostFrequentCount =
-      issueClusters.length > 0 ? issueClusters[0].count : 0
-    const summary =
+      generatedIssueClusters.length > 0 ? generatedIssueClusters[0].count : 0
+    const generatedSummary =
       mostFrequentIssue === 'Seller Error'
         ? `Most frequent issue: Seller Error (${mostFrequentCount} cases). Customers mostly complain about mistakes made by the seller, such as sending the wrong item, incomplete orders, or not following special instructions. It is recommended to improve order accuracy, double-check items before shipping, and enhance communication with buyers to reduce these errors.`
         : mostFrequentIssue
           ? `Most frequent issue: ${mostFrequentIssue} (${mostFrequentCount} cases). Customers mostly complain about ${mostFrequentIssue.toLowerCase()}. Please review the related process to reduce this issue.`
           : 'No significant negative issues detected.'
-    return { tableData, issueClusters, summary }
+    setTableData(generatedTableData)
+    setIssueClusters(generatedIssueClusters)
+    setSummary(generatedSummary)
   }, [])
 
   const handleLogoClick = () => {
@@ -73,8 +77,12 @@ export default function Dashboard() {
   // Filtering logic
   const filteredTableData =
     filter === 'all'
-      ? tableData
-      : tableData.filter((row) => row.sentiment === filter)
+      ? tableData || []
+      : (tableData || []).filter((row) => row.sentiment === filter)
+
+  if (!tableData || !issueClusters) {
+    return <div className="p-8 text-center text-gray-500">Loading...</div>
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
