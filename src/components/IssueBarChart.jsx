@@ -73,8 +73,8 @@ export default function IssueBarChart({ data }) {
         yAxis: yAxis,
         valueYField: 'count',
         categoryXField: 'label',
-        fill: am5.color(0x14b8a6),
-        stroke: am5.color(0x14b8a6),
+        fill: am5.color(0xff6900), // orange
+        stroke: am5.color(0xff6900), // orange
       }),
     )
     series.data.setAll(data)
