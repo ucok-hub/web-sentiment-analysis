@@ -48,9 +48,24 @@ export default function FileUpload() {
     setError('')
   }
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (file) {
-      router.push('/dashboard')
+      const formData = new FormData()
+      formData.append('file', file)
+      try {
+        const response = await fetch('http://192.168.1.4:8000/process', {
+          method: 'POST',
+          body: formData,
+        })
+        if (!response.ok) {
+          throw new Error('Failed to analyze file')
+        }
+        const result = await response.json()
+        localStorage.setItem('dashboardData', JSON.stringify(result))
+        router.push('/dashboard')
+      } catch (err) {
+        setError('Failed to analyze file. Please try again.')
+      }
     }
   }
 

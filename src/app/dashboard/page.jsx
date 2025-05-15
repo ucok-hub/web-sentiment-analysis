@@ -14,56 +14,43 @@ export default function Dashboard() {
   const [summary, setSummary] = useState('')
 
   useEffect(() => {
-    const issueTypes = [
-      'Production Defect',
-      'Shipping Delay',
-      'Seller Error',
-      'Wrong Item',
-      'Damaged Packaging',
-      'Late Response',
-      'Payment Issue',
-    ]
-    function getRandomInt(max) {
-      return Math.floor(Math.random() * max)
+    const data = localStorage.getItem('dashboardData');
+    if (data) {
+      const parsed = JSON.parse(data);
+      setTableData(
+        (parsed.reviews || []).map((row, idx) => ({
+          no: idx + 1,
+          review: row.Review,
+          sentiment: row.Sentimen,
+        }))
+      );
+      setIssueClusters(
+        (parsed.clusters || []).map(cluster => {
+          let label = cluster.cluster_name.toLowerCase();
+          if (label.includes('aplikasi') || label.includes('teknologi')) {
+            label = 'Application/Technology';
+          } else if (label.includes('cs') || label.includes('customer service')) {
+            label = 'Customer Service';
+          } else if (label.includes('kurir') || label.includes('pengiriman') || label.includes('delivery')) {
+            label = 'Delivery';
+          } else {
+            label = 'Other Issues';
+          }
+          return {
+            label,
+            count: cluster.sample_reviews.length,
+          };
+        })
+      );
+      setSummary(
+        (parsed.clusters && parsed.clusters.length > 0)
+          ? parsed.clusters.map(c => `${c.cluster_name}: ${c.summary}`).join('\n')
+          : ''
+      );
+      // Optionally clear after use
+      // localStorage.removeItem('dashboardData');
     }
-    const generatedTableData = Array.from({ length: 50 }, (_, i) => {
-      const isNegative = Math.random() < 0.4 // 40% negative
-      const sentiment = isNegative ? 'Negatif' : 'Positif'
-      const issue = isNegative
-        ? issueTypes[getRandomInt(issueTypes.length)]
-        : null
-      return {
-        no: i + 1,
-        review: isNegative
-          ? `Negative review about ${issue.toLowerCase()}`
-          : 'Positive review about product/service',
-        sentiment,
-        issue,
-      }
-    })
-    const generatedIssueClusters = issueTypes
-      .map((type) => ({
-        label: type,
-        count: generatedTableData.filter(
-          (d) => d.sentiment === 'Negatif' && d.issue === type,
-        ).length,
-      }))
-      .filter((c) => c.count > 0)
-      .sort((a, b) => b.count - a.count)
-    const mostFrequentIssue =
-      generatedIssueClusters.length > 0 ? generatedIssueClusters[0].label : ''
-    const mostFrequentCount =
-      generatedIssueClusters.length > 0 ? generatedIssueClusters[0].count : 0
-    const generatedSummary =
-      mostFrequentIssue === 'Seller Error'
-        ? `Most frequent issue: Seller Error (${mostFrequentCount} cases). Customers mostly complain about mistakes made by the seller, such as sending the wrong item, incomplete orders, or not following special instructions. It is recommended to improve order accuracy, double-check items before shipping, and enhance communication with buyers to reduce these errors.`
-        : mostFrequentIssue
-          ? `Most frequent issue: ${mostFrequentIssue} (${mostFrequentCount} cases). Customers mostly complain about ${mostFrequentIssue.toLowerCase()}. Please review the related process to reduce this issue.`
-          : 'No significant negative issues detected.'
-    setTableData(generatedTableData)
-    setIssueClusters(generatedIssueClusters)
-    setSummary(generatedSummary)
-  }, [])
+  }, []);
 
   const handleLogoClick = () => {
     const confirmed = window.confirm(
@@ -162,6 +149,8 @@ export default function Dashboard() {
                     className={`rounded-full px-3 py-1 text-black ${
                       row.sentiment === 'Positif'
                         ? 'bg-green-500'
+                        : row.sentiment === 'Netral'
+                        ? 'bg-gray-400'
                         : 'bg-red-500'
                     }`}
                   >
