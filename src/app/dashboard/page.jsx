@@ -14,43 +14,52 @@ export default function Dashboard() {
   const [summary, setSummary] = useState('')
 
   useEffect(() => {
-    const data = localStorage.getItem('dashboardData');
+    const data = localStorage.getItem('dashboardData')
     if (data) {
-      const parsed = JSON.parse(data);
+      const parsed = JSON.parse(data)
       setTableData(
         (parsed.reviews || []).map((row, idx) => ({
           no: idx + 1,
           review: row.Review,
           sentiment: row.Sentimen,
-        }))
-      );
+        })),
+      )
       setIssueClusters(
-        (parsed.clusters || []).map(cluster => {
-          let label = cluster.cluster_name.toLowerCase();
+        (parsed.clusters || []).map((cluster) => {
+          let label = cluster.cluster_name.toLowerCase()
           if (label.includes('aplikasi') || label.includes('teknologi')) {
-            label = 'Application/Technology';
-          } else if (label.includes('cs') || label.includes('customer service')) {
-            label = 'Customer Service';
-          } else if (label.includes('kurir') || label.includes('pengiriman') || label.includes('delivery')) {
-            label = 'Delivery';
+            label = 'Application/Technology'
+          } else if (
+            label.includes('cs') ||
+            label.includes('customer service')
+          ) {
+            label = 'Customer Service'
+          } else if (
+            label.includes('kurir') ||
+            label.includes('pengiriman') ||
+            label.includes('delivery')
+          ) {
+            label = 'Delivery'
           } else {
-            label = 'Other Issues';
+            label = 'Other Issues'
           }
           return {
             label,
             count: cluster.sample_reviews.length,
-          };
-        })
-      );
+          }
+        }),
+      )
       setSummary(
-        (parsed.clusters && parsed.clusters.length > 0)
-          ? parsed.clusters.map(c => `${c.cluster_name}: ${c.summary}`).join('\n')
-          : ''
-      );
+        parsed.clusters && parsed.clusters.length > 0
+          ? parsed.clusters
+              .map((c) => `${c.cluster_name}: ${c.summary}`)
+              .join('\n')
+          : '',
+      )
       // Optionally clear after use
       // localStorage.removeItem('dashboardData');
     }
-  }, []);
+  }, [])
 
   const handleLogoClick = () => {
     const confirmed = window.confirm(
@@ -150,8 +159,8 @@ export default function Dashboard() {
                       row.sentiment === 'Positif'
                         ? 'bg-green-500'
                         : row.sentiment === 'Netral'
-                        ? 'bg-gray-400'
-                        : 'bg-red-500'
+                          ? 'bg-gray-400'
+                          : 'bg-red-500'
                     }`}
                   >
                     {row.sentiment}
