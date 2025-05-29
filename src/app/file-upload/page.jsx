@@ -58,7 +58,17 @@ export default function FileUpload() {
           body: formData,
         })
         if (!response.ok) {
-          throw new Error('Failed to analyze file')
+          let errorMsg = 'Failed to analyze file. Please try again.'
+          try {
+            const errorData = await response.json()
+            if (errorData && errorData.error) {
+              errorMsg = errorData.error
+            }
+          } catch (jsonErr) {
+            // ignore JSON parse error, use default errorMsg
+          }
+          setError(errorMsg)
+          return
         }
         const result = await response.json()
         localStorage.setItem('dashboardData', JSON.stringify(result))
