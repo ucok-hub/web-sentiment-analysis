@@ -53,10 +53,13 @@ export default function FileUpload() {
       const formData = new FormData()
       formData.append('file', file)
       try {
-        const response = await fetch('https://be-sensashee-68559814730.asia-southeast2.run.app/process', {
-          method: 'POST',
-          body: formData,
-        })
+        const response = await fetch(
+          'https://be-sensashee-68559814730.asia-southeast2.run.app/process',
+          {
+            method: 'POST',
+            body: formData,
+          },
+        )
         if (!response.ok) {
           let errorMsg = 'Failed to analyze file. Please try again.'
           try {
