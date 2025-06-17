@@ -6,7 +6,7 @@ import '@/styles/tailwind.css'
 export const metadata = {
   title: {
     template: '%s - SensAShee',
-    default: 'SensAShee -  Sentiment Analysis for Shopee Reviews',
+    default: 'SensAShee -  Sentiment Analysis for E-Commerce Reviews',
   },
   description:
     'Analyze customer reviews effortlessly and gain valuable insights to improve your products.',

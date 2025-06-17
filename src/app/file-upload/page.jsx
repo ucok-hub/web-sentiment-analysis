@@ -9,6 +9,7 @@ import { Logo } from '@/components/Logo'
 export default function FileUpload() {
   const [file, setFile] = useState(null)
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const validFormats = ['csv', 'xls', 'xlsx']
@@ -50,16 +51,14 @@ export default function FileUpload() {
 
   const handleAnalyze = async () => {
     if (file) {
+      setLoading(true)
       const formData = new FormData()
       formData.append('file', file)
       try {
-        const response = await fetch(
-          'https://be-sensashee-68559814730.asia-southeast2.run.app/process',
-          {
-            method: 'POST',
-            body: formData,
-          },
-        )
+        const response = await fetch('http://127.0.0.1:5000/process', {
+          method: 'POST',
+          body: formData,
+        })
         if (!response.ok) {
           let errorMsg = 'Failed to analyze file. Please try again.'
           try {
@@ -71,6 +70,7 @@ export default function FileUpload() {
             // ignore JSON parse error, use default errorMsg
           }
           setError(errorMsg)
+          setLoading(false)
           return
         }
         const result = await response.json()
@@ -78,6 +78,7 @@ export default function FileUpload() {
         router.push('/dashboard')
       } catch (err) {
         setError('Failed to analyze file. Please try again.')
+        setLoading(false)
       }
     }
   }
@@ -102,6 +103,41 @@ export default function FileUpload() {
           <Logo className="h-10" />
         </div>
       </header>
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+          <div className="rounded-lg bg-white p-8 shadow-lg">
+            <div className="flex flex-col items-center space-y-4">
+              <svg
+                className="h-16 w-16 animate-spin text-orange-600"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <p className="text-xl font-semibold text-gray-700">
+                Processing your file...
+              </p>
+              <p className="text-sm text-gray-500">
+                This may take a few moments
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="mt-16 flex flex-grow items-center justify-center p-6">
