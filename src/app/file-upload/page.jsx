@@ -55,10 +55,13 @@ export default function FileUpload() {
       const formData = new FormData()
       formData.append('file', file)
       try {
-        const response = await fetch('http://127.0.0.1:5000/process', {
-          method: 'POST',
-          body: formData,
-        })
+        const response = await fetch(
+          'https://sensashee-gamma.vercel.app/process',
+          {
+            method: 'POST',
+            body: formData,
+          },
+        )
         if (!response.ok) {
           let errorMsg = 'Failed to analyze file. Please try again.'
           try {
