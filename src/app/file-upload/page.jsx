@@ -56,7 +56,7 @@ export default function FileUpload() {
       formData.append('file', file)
       try {
         const response = await fetch(
-          'https://be-sensashee-290223941388.asia-southeast2.run.app',
+          'https://be-sensashee-290223941388.asia-southeast2.run.app/process',
           {
             method: 'POST',
             body: formData,
