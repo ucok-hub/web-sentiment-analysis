@@ -24,6 +24,8 @@ export default function Dashboard() {
           sentiment: row.Sentimen,
         })),
       )
+
+      // Process all clusters for the bar chart
       setIssueClusters(
         (parsed.clusters || []).map((cluster) => {
           let label = cluster.cluster_name.toLowerCase()
@@ -45,19 +47,24 @@ export default function Dashboard() {
           }
           return {
             label,
-            count: cluster.sample_reviews.length,
+            count: cluster.review_count, // Use review_count instead of sample_reviews.length
           }
         }),
       )
-      setSummary(
-        parsed.clusters && parsed.clusters.length > 0
-          ? parsed.clusters
-              .map((c) => `${c.cluster_name}: ${c.summary}`)
-              .join('\n')
-          : '',
-      )
-      // Optionally clear after use
-      // localStorage.removeItem('dashboardData');
+
+      // Only show summary for the cluster with highest review count
+      if (parsed.clusters && parsed.clusters.length > 0) {
+        // Sort clusters by review_count (in case they're not already sorted)
+        const sortedClusters = [...parsed.clusters].sort(
+          (a, b) => b.review_count - a.review_count,
+        )
+
+        // Get only the top cluster's summary
+        const topCluster = sortedClusters[0]
+        setSummary(`${topCluster.cluster_name}: ${topCluster.summary}`)
+      } else {
+        setSummary('')
+      }
     }
   }, [])
 
@@ -202,7 +209,10 @@ export default function Dashboard() {
         <div className="mb-2 flex items-center justify-center">
           <Logo className="h-8" />
         </div>
-        <div>© 2025 SensAShee – Sentiment Analysis Dashboard</div>
+        <div>
+          <br />
+          <br />© 2025 SensAShee – Sentiment Analysis Dashboard
+        </div>
       </footer>
     </div>
   )
