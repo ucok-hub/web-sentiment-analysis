@@ -96,16 +96,23 @@ export default function FileUpload() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="relative flex min-h-screen flex-col">
+      {/* Fullscreen Gradient Background */}
+      <div
+        className="fixed inset-0 -z-10 h-full w-full bg-gradient-to-r from-orange-400 via-orange-500 to-red-500"
+        aria-hidden="true"
+      ></div>
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full bg-white p-4 shadow">
+      <header className="fixed top-0 left-0 z-10 w-full bg-white/80 p-4 shadow backdrop-blur">
         <div
-          className="flex cursor-pointer items-center text-2xl font-bold text-black"
+          className="flex cursor-pointer items-center text-2xl font-bold text-black drop-shadow-md"
           onClick={handleLogoClick}
         >
           <Logo className="h-10" />
         </div>
       </header>
+      {/* Orange to White Transition */}
+      <div className="h-16 w-full bg-gradient-to-b from-orange-400/90 via-orange-200/60 to-white"></div>
       {/* Loading Overlay */}
       {loading && (
         <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
@@ -143,8 +150,8 @@ export default function FileUpload() {
       )}
 
       {/* Main Content */}
-      <main className="mt-16 flex flex-grow items-center justify-center p-6">
-        <div className="w-full max-w-lg space-y-4 rounded-lg bg-white p-6 shadow">
+      <main className="mt-8 flex flex-grow items-center justify-center p-6">
+        <div className="w-full max-w-lg space-y-4 rounded-2xl border border-orange-200 bg-white/90 p-8 shadow-xl backdrop-blur-lg">
           {/* Title */}
           <div className="flex justify-center">
             <Image
@@ -152,27 +159,31 @@ export default function FileUpload() {
               alt="SensAShee Logo"
               width={90}
               height={90}
-              className="mb-4"
+              className="mb-4 drop-shadow-lg"
             />
           </div>
-          <h1 className="text-center text-2xl font-bold">Upload Your Data</h1>
-          <p className="text-center text-gray-600">
+          <h1 className="text-center text-3xl font-extrabold text-orange-600 drop-shadow-sm">
+            Upload Your Data
+          </h1>
+          <p className="text-center text-lg font-medium text-orange-900/80">
             Select or drag & drop your CSV, XLS, or XLSX file to begin sentiment
             analysis.
           </p>
 
           {/* Dropzone */}
           <div
-            className="flex h-48 flex-col items-center justify-center space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-6"
+            className="flex h-48 cursor-pointer flex-col items-center justify-center space-y-2 rounded-xl border-2 border-dashed border-orange-400 p-6 shadow-md transition-transform duration-200 hover:scale-105 hover:bg-orange-100/80"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <div className="text-4xl text-gray-400">↑</div>
-            <p className="text-gray-500">Drag & drop your file here</p>
-            <p className="text-gray-500">or</p>
+            <div className="text-4xl text-orange-400 drop-shadow">↑</div>
+            <p className="font-semibold text-orange-700">
+              Drag & drop your file here
+            </p>
+            <p className="font-semibold text-orange-700">or</p>
             <label
               htmlFor="file-upload"
-              className="cursor-pointer rounded bg-red-500 px-8 py-4 text-white"
+              className="cursor-pointer rounded bg-gradient-to-r from-orange-500 to-red-500 px-8 py-4 font-bold text-white shadow transition-transform duration-200 hover:scale-105 hover:brightness-90"
             >
               Select File
             </label>
@@ -186,12 +197,18 @@ export default function FileUpload() {
           </div>
 
           {/* Error Message */}
-          {error && <p className="text-center text-sm text-red-500">{error}</p>}
+          {error && (
+            <p className="text-center text-sm font-semibold text-red-500">
+              {error}
+            </p>
+          )}
 
           {/* Uploaded File Display */}
           {file && (
-            <div className="flex items-center justify-between rounded bg-gray-100 p-3">
-              <span className="text-sm text-gray-700">{file.name}</span>
+            <div className="flex items-center justify-between rounded border border-orange-200 bg-orange-50 p-3">
+              <span className="text-sm font-semibold text-orange-900">
+                {file.name}
+              </span>
               <button
                 onClick={handleDeleteFile}
                 className="text-red-500 hover:text-red-700"
@@ -202,15 +219,15 @@ export default function FileUpload() {
           )}
 
           {/* Supported Formats */}
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-orange-700">
             Supported formats: .csv, .xls, .xlsx
           </p>
 
           {/* Analyze Sentiment Button */}
           <button
-            className={`h-12 w-full rounded ${
+            className={`h-12 w-full rounded-xl text-lg font-bold shadow-md transition-transform duration-200 hover:scale-105 hover:bg-orange-600/90 ${
               file
-                ? 'bg-red-500 text-white'
+                ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
                 : 'cursor-not-allowed bg-gray-300 text-gray-500'
             }`}
             disabled={!file}
@@ -222,7 +239,14 @@ export default function FileUpload() {
       </main>
 
       {/* Footer */}
-      <footer className="py-4 text-center text-sm text-gray-500">
+      <footer className="mt-8 flex w-full items-center justify-center gap-2 border-t border-orange-200 bg-white/80 py-4 text-center text-sm font-semibold text-orange-700 drop-shadow backdrop-blur">
+        <svg
+          className="inline h-5 w-5 text-orange-500"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 12.93V17a1 1 0 11-2 0v-2.07A6.002 6.002 0 014 10a6 6 0 1112 0 6.002 6.002 0 01-5 5.93z" />
+        </svg>
         © SensAShee 2025 – Sentiment Analysis Dashboard
       </footer>
     </div>

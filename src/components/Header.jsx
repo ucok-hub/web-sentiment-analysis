@@ -75,7 +75,7 @@ function MobileNavigation() {
 
 export function Header() {
   return (
-    <header className="py-10">
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-orange-200 bg-white/60 py-6 shadow-md backdrop-blur-lg">
       <Container>
         <nav className="relative z-50 flex justify-between">
           <div className="flex items-center md:gap-x-12">
@@ -88,7 +88,7 @@ export function Header() {
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             <Link href="/file-upload">
-              <Button>
+              <Button className="bg-gradient-to-r from-orange-400 to-red-500 text-white shadow-md hover:brightness-110">
                 <span>
                   Get started{' '}
                   <span className="hidden lg:inline">

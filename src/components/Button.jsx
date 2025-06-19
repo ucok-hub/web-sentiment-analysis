@@ -3,9 +3,9 @@ import clsx from 'clsx'
 
 const baseStyles = {
   solid:
-    'group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2',
+    'group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 transition-transform duration-200',
   outline:
-    'group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-hidden',
+    'group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-hidden transition-transform duration-200',
 }
 
 const variantStyles = {
@@ -35,6 +35,7 @@ export function Button({ className, ...props }) {
       : props.variant === 'solid'
         ? variantStyles.solid[props.color]
         : undefined,
+    'hover:scale-110',
     className,
   )
 
