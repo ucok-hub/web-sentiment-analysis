@@ -18,8 +18,7 @@ export default function Dashboard() {
     if (data) {
       const parsed = JSON.parse(data)
       setTableData(
-        (parsed.reviews || []).map((row, idx) => ({
-          no: idx + 1,
+        (parsed.reviews || []).map((row) => ({
           review: row.Review,
           sentiment: row.Sentimen,
         })),
@@ -102,9 +101,6 @@ export default function Dashboard() {
         >
           <Logo className="h-10" />
         </div>
-        <h1 className="ml-4 font-display text-3xl font-bold text-orange-600 drop-shadow-sm">
-          Table Review
-        </h1>
         <div className="relative ml-auto">
           <button
             className="flex items-center rounded-md border border-orange-300 bg-white/80 px-4 py-2 text-orange-700 transition hover:bg-orange-100"
@@ -174,9 +170,6 @@ export default function Dashboard() {
             <table className="w-full table-auto border-collapse">
               <thead>
                 <tr className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                  <th className="rounded-tl-lg border border-orange-300 px-4 py-2">
-                    No
-                  </th>
                   <th className="border border-orange-300 px-4 py-2">Review</th>
                   <th className="rounded-tr-lg border border-orange-300 px-4 py-2">
                     Sentiment Analysis
@@ -185,10 +178,7 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {filteredTableData.map((row) => (
-                  <tr className="bg-orange-50" key={row.no}>
-                    <td className="border border-orange-200 px-4 py-2">
-                      {row.no}
-                    </td>
+                  <tr className="bg-orange-50" key={row.review}>
                     <td className="border border-orange-200 px-4 py-2">
                       {row.review}
                     </td>
